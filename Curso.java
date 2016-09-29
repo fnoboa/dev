@@ -1,14 +1,23 @@
 package br.com.caelum.collections;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class Curso {
 	
 	private String nome;
 	private String instrutor;
 	private List<Aula> aulas = new LinkedList<Aula>();
+	//private Set<Aluno> alunos = new HashSet<>();
+	private Set<Aluno> alunos = new LinkedHashSet<>();
+	private Map<Integer, Aluno> matriculaParaAluno = new HashMap<>();
+	
 	private int tempoTotal;
 	
 	public Curso(String nome, String instrutor) {
@@ -42,7 +51,28 @@ public class Curso {
         return "[Curso: " + this.getNome() + ", tempo total: " + this.getTempoTotal()
                 + ", aulas: + " + this.aulas + "]";
     }
+
+	public void matricula(Aluno aluno) {
+		this.alunos.add(aluno);		
+		this.matriculaParaAluno.put(aluno.getNumeroMatricula(), aluno);
+	}
     
+	public Set<Aluno> getAlunos() {
+	    return Collections.unmodifiableSet(alunos);
+	}
+
+	public boolean estaMatriculado(Aluno aluno) {
+		
+		return this.alunos.contains(aluno);
+	}
+	
+	public Aluno buscaMatriculado(int numero) {
+		if (!matriculaParaAluno.containsKey(numero))
+			throw new NoSuchElementException("Matricula " + numero
+		            + " não encontrada");
+		
+		return this.matriculaParaAluno.get(numero);
+	}
     
 
 }
