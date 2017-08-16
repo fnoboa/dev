@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="_template.xhtml">
+
+		<ui:define name="titulo">
+			<p:outputPanel>Search Card</p:outputPanel>
+		</ui:define>
+
+		<ui:define name="conteudo">
+			<h:form id="formSearch">
+				<p:fieldset legend="Search Credit Card">
+					<p:panelGrid columns="2">
+					
+					
+
+						<p:outputLabel value="Credit Card number:" for="number" />
+						<p:inputText id="number" value="#{cardBean.card.number}"
+							required="true" requiredMessage="Credit card number is required"
+							validatorMessage="Credit card number is 16 digits">
+							<f:validateLength minimum="16" maximum="16"/>							
+							<f:ajax event="blur" render="messages" />
+						</p:inputText>	
+						
+						<p:outputLabel value="User name:" for="user" />
+						<p:inputText id="user" value="#{cardBean.card.user}"
+							required="true" requiredMessage="Credit card user name is required">
+							<f:ajax event="blur" render="messages" />
+						</p:inputText>					
+										
+						<p:commandButton value="Search" action="#{cardBean.search}" process="@form" 
+								update="@form :formTabelaCards:tabelaCards"/> 
+						
+						
+							  						
+					</p:panelGrid>
+					
+				</p:fieldset>
+			</h:form>	
+				
+			
+			<h:form id="formTabelaCards">
+			<p:dataTable value="#{cardBean.cards}" var="card" id="tabelaCards" rows="5">
+				<f:facet name="header">Credit Card Informatin</f:facet>
+				<p:column headerText="Number" sortBy="#{card.number}">
+					<h:outputText value="#{card.number}" />
+				</p:column>
+				<p:column headerText="Name" sortBy="#{card.name}" >
+					<h:outputText value="#{card.name}" />
+				</p:column>				
+				<p:column headerText="Expiry Date" sortBy="#{card.expirydate}">
+					<h:outputText value="#{card.expirydate}">
+						<f:convertDateTime pattern="MM/yyyy"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="UserName" sortBy="#{card.user}" >
+					<h:outputText value="#{card.user}" />
+				</p:column>
+				
+				
+			</p:dataTable>
+			</h:form>	
+				
+		</ui:define>
+
+	</ui:composition>
+
+</html>
